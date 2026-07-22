@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: docmind_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password@12345
+      POSTGRES_DB: docmind
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7-alpine
+    container_name: docmind_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: docmind_backend
+    restart: always
+    environment:
+      - DB_TYPE=postgresql
+      - DB_USER=postgres
+      - DB_PASSWORD=Password@12345
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=docmind
+      - REDIS_URL=redis://cache:6379/0
+      - AI_FALLBACK_MODE=True
+      - SECRET_KEY=production_secret_key_jwt_authentication_token_987654321
+    ports:
+      - "8000:8000"
+    volumes:
+      - doc_uploads:/app/backend/uploads
+    depends_on:
+      - db
+      - cache
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: docmind_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:
+  doc_uploads:
