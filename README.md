@@ -217,16 +217,3 @@ This project is licensed under the MIT License.
 
 📧 Email: prince.maurya2023@glbajajgroup.org
 
-💼 LinkedIn: https://linkedin.com/in/your-linkedin
-
-🐙 GitHub: https://github.com/your-github
-
-🌐 Portfolio: https://your-portfolio.com
-
----
-
-## ⭐ Show Your Support
-
-If you found this project useful, please consider giving it a **⭐ Star** on GitHub.
-
-**Built with ❤️ using Python, PyTorch, Hugging Face, FastAPI, React.js & Deep Learning**
